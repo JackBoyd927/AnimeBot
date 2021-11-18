@@ -1,97 +1,37 @@
 import os
 import random
-import requests
 import discord
 from discord.ext import commands
-import anime_images_api
-from anime_images_api import Anime_Images
-import giphy_client
-from giphy_client.rest import ApiException
-
+from keep_alive import keep_alive
 
 TOKEN = os.environ['TOKEN']
 
-client = commands.Bot(command_prefix='^')
+client = commands.Bot(command_prefix='%') 
 
+@client.command()
+async def load(ctx, extension):
+  client.load_extension(f'cogs.{extension}')
+
+@client.command()
+async def unload(ctx, extension):
+  client.unload_extension(f'cogs.{extension}')
+
+@client.command()
+async def reload(ctx, extension):
+  client.unload_extension(f'cogs.{extension}')
+  client.load_extension(f'cogs.{extension}')
 
 
 @client.event
 async def on_ready():
-  print('Bot is logged in as {0.user}'
-  .format(client))
+  print(f'Bot is logged in as {client.user}')
 
 @client.command()
 async def hello(ctx):
   await ctx.channel.send(f"Hello! {ctx.author.mention}")
 
-@client.command()
-async def hug(ctx):
-  anime = Anime_Images()
-  rst = anime.get_sfw('hug')
-  emb = discord.Embed(title=hug)
-  emb.set_image(url = rst)
-
-  await ctx.channel.send(embed=emb)
-
-@client.command()
-async def kiss(ctx):
-  anime = Anime_Images()
-  rst = anime.get_sfw('kiss')
-  emb = discord.Embed(title=kiss)
-  emb.set_image(url = rst)
-
-  await ctx.channel.send(embed=emb)
-
-@client.command()
-async def slap(ctx):
-  anime = Anime_Images()
-  rst = anime.get_sfw('slap')
-  emb = discord.Embed(title=slap)
-  emb.set_image(url = rst)
-
-  await ctx.channel.send(embed=emb)
-
-@client.command()
-async def wink(ctx):
-  anime = Anime_Images()
-  rst = anime.get_sfw('wink')
-  emb = discord.Embed(title=wink)
-  emb.set_image(url = rst)
-
-  await ctx.channel.send(embed=emb)
-
-@client.command()
-async def pat(ctx):
-  anime = Anime_Images()
-  rst = anime.get_sfw('pat')
-  emb = discord.Embed(title=pat)
-  emb.set_image(url = rst)
-
-  await ctx.channel.send(embed=emb)
-
-@client.command()
-async def kill(ctx):
-  anime = Anime_Images()
-  rst = anime.get_sfw('kill')
-  emb = discord.Embed(title=kill)
-  emb.set_image(url = rst)
-
-  await ctx.channel.send(embed=emb)
-
-@client.command()
-async def cuddle(ctx):
-  anime = Anime_Images()
-  rst = anime.get_sfw('cuddle')
-  emb = discord.Embed(title=cuddle)
-  emb.set_image(url = rst)
-
-  await ctx.channel.send(embed=emb)
-
-
-
-
-
-
-
-
+for filename in os.listdir('./cogs'):
+  if filename.endswith('.py'):
+    client.load_extension(f'cogs.{filename[:-3]}')
+keep_alive()
 client.run(TOKEN)
