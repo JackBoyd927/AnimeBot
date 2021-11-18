@@ -8,6 +8,8 @@ authors = ["ArcticPineapple <<>>"]
 python = "^3.8"
 discord = "^1.7.3"
 giphy_client = "^1.0.0"
+requests = "^2.26.0"
+anime-images-api = "^0.0.6"
 
 [tool.poetry.dev-dependencies]
 
