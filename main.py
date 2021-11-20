@@ -1,12 +1,11 @@
 import os
-import random
 import discord
 from discord.ext import commands
 from keep_alive import keep_alive
 
 TOKEN = os.environ['TOKEN']
-
-client = commands.Bot(command_prefix='%') 
+intents = discord.Intents().all()
+client = commands.Bot(command_prefix='%', intents=intents) 
 
 @client.command()
 async def load(ctx, extension):
