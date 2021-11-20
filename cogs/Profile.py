@@ -26,7 +26,7 @@ class Profile(commands.Cog):
   
 
   @commands.command()
-  async def avatar(self, ctx, *,  target : discord.Member=None):
+  async def profile(self, ctx, *,  target : discord.Member=None):
     if not target:
       target = ctx.author
     name = str(target.display_name)
