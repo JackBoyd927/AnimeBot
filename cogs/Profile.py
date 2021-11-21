@@ -17,9 +17,7 @@ def circle(pfp,size = (500,500)):
     mask = ImageChops.darker(mask, pfp.split()[-1])
     pfp.putalpha(mask)
     return pfp
-
-
-
+  
 class Profile(commands.Cog):
   
   def __init__(self, client):
@@ -40,7 +38,7 @@ class Profile(commands.Cog):
     base = Image.open('./Assets/profileBase.png').convert("RGBA")
     data = BytesIO(await pfp.read())
     pfp = Image.open(data).convert("RGBA")
-    name = f"{name[:16]}..." if len(name)>16 else name
+    name = f"{name[:12]}..." if len(name)>12 else name
     draw = ImageDraw.Draw(base)
     pfp = circle(pfp, size=(500,500))
     font = ImageFont.truetype("./Assets/openSans.ttf", 75)
@@ -72,22 +70,21 @@ class Profile(commands.Cog):
       targ2Pfp = Image.open(data).convert("RGBA")
       data = BytesIO(await targ1Pfp.read())
       targ1Pfp = Image.open(data).convert("RGBA")
-      targ2Name = f"{targ2Name[:16]}..." if len(targ2Name)>16 else targ2Name
-      targ1Name = f"{targ1Name[:16]}..." if len(targ1Name)>16 else targ1Name
+      targ2Name = f"{targ2Name[:10]}..." if len(targ2Name)>10 else targ2Name
+      targ1Name = f"{targ1Name[:10]}..." if len(targ1Name)>10 else targ1Name
       draw = ImageDraw.Draw(base)
-      targ2Pfp = circle(targ2Pfp, size=(150,150))
-      targ1Pfp = circle(targ1Pfp, size=(150,150))
-      W = 375
-      H = 550
-      w, h = draw.textsize(targ2Name)
-      w2, h2 = draw.textsize(targ1Name)
-      w3, h3 = draw.textsize(amount)
+      targ2Pfp = circle(targ2Pfp, size=(200,200))
+      targ1Pfp = circle(targ1Pfp, size=(200,200))
+      W = 500
       font = ImageFont.truetype("./Assets/openSans.ttf", 25)
-      draw.text(((W-w)/2,(H-h)/2-75), targ2Name, fill="black", font=font)
-      draw.text(((W-w2)/2,(H-h2)/2+75), targ1Name, fill="black", font=font)
-      draw.text(((W-w3)/2,(H-h3)/2), amount, fill="black", font=font)
-      base.paste(targ2Pfp,(137,15),targ2Pfp)
-      base.paste(targ1Pfp,(137,400),targ1Pfp)
+      w,h = draw.textsize(targ2Name, font=font)
+      draw.text(((W-w)/2-150,268), targ2Name, fill="black", font=font)
+      w,h = draw.textsize(targ1Name, font=font)
+      draw.text(((W-w)/2+150,268), targ1Name, fill="black", font=font)
+      w,h = draw.textsize(amount, font=font)
+      draw.text(((W-w)/2,268), amount, fill="black", font=font)
+      base.paste(targ2Pfp,(150,24),targ2Pfp)
+      base.paste(targ1Pfp,(150,352),targ1Pfp)
 
       with BytesIO() as a:
         base.save(a, "PNG")
