@@ -34,7 +34,7 @@ class Profile(commands.Cog):
     name = str(target.display_name)
     userId = str(target.id)
     status = str(target.status)
-    joined = target.joined_at.strftime("%a %b %B %Y")
+    joined = target.joined_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
 
     pfp = target.avatar_url_as(size=256)
     base = Image.open('./Assets/profileBase.png').convert("RGBA")
@@ -57,37 +57,37 @@ class Profile(commands.Cog):
       a.seek(0)
       await ctx.send(file=discord.File(a,"profile.png"))
   @commands.command()
-  async def ship(self, ctx, *,  target : discord.Member=None):
-      if not target:
-        target = ctx.author
-      authName = str(ctx.author.display_name)
-      targName = str(target.display_name)
+  async def ship(self, ctx,  target1 : discord.Member, target2 : discord.Member=None):
+      if not target2:
+        target2 = ctx.author
+      targ2Name = str(target2.display_name)
+      targ1Name = str(target1.display_name)
       amount = randrange(100)
       amount = f"{amount}%"
 
-      authPfp = ctx.author.avatar_url_as(size=256)
-      targPfp = target.avatar_url_as(size=256)
+      targ2Pfp = target2.avatar_url_as(size=256)
+      targ1Pfp = target1.avatar_url_as(size=256)
       base = Image.open('./Assets/loveBase.png').convert("RGBA")
-      data = BytesIO(await authPfp.read())
-      authPfp = Image.open(data).convert("RGBA")
-      data = BytesIO(await targPfp.read())
-      targPfp = Image.open(data).convert("RGBA")
-      authName = f"{authName[:16]}..." if len(authName)>16 else authName
-      targName = f"{targName[:16]}..." if len(targName)>16 else targName
+      data = BytesIO(await targ2Pfp.read())
+      targ2Pfp = Image.open(data).convert("RGBA")
+      data = BytesIO(await targ1Pfp.read())
+      targ1Pfp = Image.open(data).convert("RGBA")
+      targ2Name = f"{targ2Name[:16]}..." if len(targ2Name)>16 else targ2Name
+      targ1Name = f"{targ1Name[:16]}..." if len(targ1Name)>16 else targ1Name
       draw = ImageDraw.Draw(base)
-      authPfp = circle(authPfp, size=(150,150))
-      targPfp = circle(targPfp, size=(150,150))
+      targ2Pfp = circle(targ2Pfp, size=(150,150))
+      targ1Pfp = circle(targ1Pfp, size=(150,150))
       W = 375
       H = 550
-      w, h = draw.textsize(authName)
-      w2, h2 = draw.textsize(targName)
+      w, h = draw.textsize(targ2Name)
+      w2, h2 = draw.textsize(targ1Name)
       w3, h3 = draw.textsize(amount)
       font = ImageFont.truetype("./Assets/openSans.ttf", 25)
-      draw.text(((W-w)/2,(H-h)/2-75), authName, fill="black", font=font)
-      draw.text(((W-w2)/2,(H-h2)/2+75), targName, fill="black", font=font)
+      draw.text(((W-w)/2,(H-h)/2-75), targ2Name, fill="black", font=font)
+      draw.text(((W-w2)/2,(H-h2)/2+75), targ1Name, fill="black", font=font)
       draw.text(((W-w3)/2,(H-h3)/2), amount, fill="black", font=font)
-      base.paste(authPfp,(137,15),authPfp)
-      base.paste(targPfp,(137,400),targPfp)
+      base.paste(targ2Pfp,(137,15),targ2Pfp)
+      base.paste(targ1Pfp,(137,400),targ1Pfp)
 
       with BytesIO() as a:
         base.save(a, "PNG")
