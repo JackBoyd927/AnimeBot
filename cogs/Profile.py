@@ -34,7 +34,7 @@ class Profile(commands.Cog):
     name = str(target.display_name)
     userId = str(target.id)
     status = str(target.status)
-    joined = target.joined_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
+    joined = target.joined_at.strftime("%A, %B %d %Y\n@ %H:%M:%S %p")
 
     pfp = target.avatar_url_as(size=256)
     base = Image.open('./Assets/profileBase.png').convert("RGBA")
