@@ -91,8 +91,14 @@ class Profile(commands.Cog):
         a.seek(0)
         await ctx.send(file=discord.File(a,"ship.png"))
 
-
-
+  @commands.command()
+  async def position(self, ctx, *, member: discord.Member = None):
+    member = member or ctx.author
+    if member.joined_at is None:
+        await ctx.send("Could not locate your join date.")
+        return
+    pos = sum(m.joined_at < member.joined_at for m in ctx.guild.members if m.joined_at is not None) + 1
+    await ctx.send(f"You are member #{pos}")
 
 
 
