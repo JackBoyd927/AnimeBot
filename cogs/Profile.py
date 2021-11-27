@@ -98,7 +98,7 @@ class Profile(commands.Cog):
         await ctx.send("Could not locate your join date.")
         return
     pos = sum(m.joined_at < member.joined_at for m in ctx.guild.members if m.joined_at is not None) + 1
-    await ctx.send(f"You are member #{pos}")
+    await ctx.send(f"{member.mention} are member #{pos}")
 
 
 
